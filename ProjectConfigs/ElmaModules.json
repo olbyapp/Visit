@@ -1,0 +1,8 @@
+{
+  "Id": 2,
+  "Name": "ElmaModules",
+  "DescriptionFileName": "ElmaModulesMd.md",
+  "GitHubLink": "",
+  "Points": null,
+  "Stack": "asp.net.core, blazor, entity framework"
+}

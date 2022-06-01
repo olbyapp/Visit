@@ -1,0 +1,112 @@
+﻿@page "/"
+@using Visit.Interfaces
+
+@inject IProjectService ProjectService;
+
+<PageTitle>Вохмяков А.Ю.</PageTitle>
+
+<MudGrid>
+    <MudItem>
+        <MudPaper Height="300" Width="300" Style="border-radius: 10%; align-content:center" Class="xs-4" Elevation="0">
+            <img style="border-radius: 10%; align-self: center" height="300" width="300" src="images/ava_1.jpg"  />
+        </MudPaper>
+    </MudItem>
+    <MudItem xs=8>
+        <MudPaper Class="pa-4">
+            <MudText>Вохмяков Андрей Юрьевич</MudText>
+            <MudText>09.10.1994 - @(_ages)</MudText>
+            <MudText>Работаю разработчиком @_workAges</MudText>
+            <MudText>Программист C#</MudText>
+            <br/>
+
+            <MudItem Class="mt-5 mb-5">
+                @foreach (string tag in Tags)
+                {
+                    <MudChip Color="Color.Dark">@tag</MudChip>
+                }
+            </MudItem>
+
+            <MudDivider Class="ma-2" />
+            <MudIconButton  Icon="@Icons.Custom.Brands.Telegram" Href="https://t.me/Andrey_OLBY" Size="Size.Large" Color="Color.Info" />
+            <MudIconButton  Icon="@Icons.Custom.Brands.Gmail" Href="mailto:a091094@mail.ru" Size="Size.Large" Color="Color.Info" />
+             <MudIconButton  Icon="@Icons.Custom.Brands.GitHub" Href="mailto:a091094@mail.ru" Size="Size.Large" Color="Color.Info" />
+            <MudDivider Class="ma-2" />
+
+            <MudText Align="Align.Right" Color="Color.Info">Доступ к репозиториям по запросу в телеграм или на почту.</MudText>
+        </MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudSwitch @bind-Checked="@_autoCicle" Color="Color.Success"  Label="Прокрутка проектов"/>
+    </MudItem>
+    <MudItem xs=12>
+        <MudCarousel ItemsSource="@_projects" 
+                     Class="mud-width-full" 
+                     Style="height: 1200px; "   
+                     ShowArrows="true" 
+                     ShowBullets="true" 
+                     BulletsPosition="Position.Top"
+                     AutoCycle="_autoCicle"
+                     AutoCycleTime="_cycleTime"
+                     ArrowsPosition = "Position.Start"
+                     ShowDelimiters = "true"
+                     TData="IProject">
+            <ItemTemplate >
+                <MudItem Class="mt-16 mb-7">
+                       @foreach (string tag in GetListTags(context.Stack))
+                        {
+                            <MudChip Color="Color.Dark">@tag</MudChip>
+                        }
+                </MudItem>
+                <div style="overflow-y: scroll; overflow-x: scroll; height: -webkit-fill-available; width: 1200px;">
+                     <MudMarkdown  Value=@ProjectService.ReadMdFile(context)/>
+                </div>
+	        </ItemTemplate>
+        </MudCarousel>
+    </MudItem>
+    <MudPaper Class="mt-15 pa-5 mb-15 blue darken-1 shades-text text-white"
+              Elevation="3" Width="1200px">
+        <MudText Class="d-inline-flex" >Текущий список проектов на данной странице - не полный. Подробнее можно посмотреть в портфолио.</MudText>
+        <MudFab  Class="d-inline-flex ml-5" 
+                 Color="Color.Tertiary"
+                 StartIcon="@Icons.Material.Filled.Share"
+                 Size="Size.Small"
+                 Href="https://docs.google.com/document/d/1NkEVKdzo9vB5T5_U341e6T5FvKyZz2DZyXmzeAB7THs/edit?usp=sharing" 
+                 Label="Открыть портфолио" 
+                 Target="_blank"/>
+    </MudPaper>
+</MudGrid>
+ 
+@code{
+    string[] Tags = new string[] { "asp.net.core", "mono", "entity framework", "postgresql", "wpf", "winform", "xamarin.forms", "blazor", "typescript", "javascript", "groovy","wcf","signalr" };
+    List<IProject> _projects = new List<IProject>();
+    string _ages = String.Empty;
+    string _workAges = String.Empty;
+    bool _autoCicle { get; set; } = true;
+    TimeSpan _cycleTime = new TimeSpan(0, 0, 20);
+
+    protected override void OnInitialized()
+    {
+        _workAges = String.Concat(((DateTime.Now - new DateTime(2019,03,1)).Days/365).ToString(),
+                                  " г.");
+        _ages = String.Concat(((DateTime.Now - (new DateTime(1994,10,9))).Days/365).ToString(),
+                              " л.");
+        _projects = ProjectService.GetProjects();
+    }
+
+    string[] GetListTags(string raw)
+    {
+        if (String.IsNullOrWhiteSpace(raw))
+            return Array.Empty<string>();
+
+        return raw.Split(',').Where(s=>!String.IsNullOrWhiteSpace(s)).ToArray();
+    }
+
+}
+
+<style>
+    img {
+      -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.41);
+        -moz-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.41);
+        box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.41);
+    }
+</style>

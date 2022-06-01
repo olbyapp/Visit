@@ -1,0 +1,8 @@
+{
+  "Id": 5,
+  "Name": "Cofr",
+  "DescriptionFileName": "CofrMd.md",
+  "GitHubLink": "",
+  "Points": null,
+  "Stack": "WPF, MVVM, RestApi, EntityFramework"
+}

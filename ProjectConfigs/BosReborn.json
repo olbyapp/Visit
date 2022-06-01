@@ -1,0 +1,8 @@
+{
+  "Id": 1,
+  "Name": "BosReborn",
+  "DescriptionFileName": "BosRebornMd.md",
+  "GitHubLink": "",
+  "Points": null,
+  "Stack": "asp.net.core, blazor, js, signalr, postgres, ldap"
+}

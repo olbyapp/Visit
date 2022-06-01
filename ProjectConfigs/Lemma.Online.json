@@ -1,0 +1,8 @@
+{
+  "Id": 3,
+  "Name": "Lemma.Online",
+  "DescriptionFileName": "Lemma.OnlineMd.md",
+  "GitHubLink": "",
+  "Points": null,
+  "Stack": "Xamarin, Xamarin.Forms, mono, mvvm"
+}
